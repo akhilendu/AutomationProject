@@ -17,7 +17,7 @@ class Adminpage:
     def enter_admintile(self):
         self.driver.find_element(*self.admintile).click()
     def enter_newusername(self,username_value):
-        self.driver.find_element(*self.enter_name).send_keys("Ak")
+        self.driver.find_element(*self.enter_name).send_keys("AkilenduPaiyoor")
     def enter_newpassword(self,password_value):
         self.driver.find_element(*self.enter_password).send_keys("hello")
     def select_search(self):
