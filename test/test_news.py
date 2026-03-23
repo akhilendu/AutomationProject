@@ -29,6 +29,8 @@ class Test_news:
         news.click_managetile()
         time.sleep(2)
         news.click_breadcrumb()
+        actualurl = self.driver.current_url
+        assert actualurl == "https://groceryapp.uniqassosiates.com/admin/home"
 
 
     def test_verify_addnews(self,browzer_instance):
@@ -55,11 +57,11 @@ class Test_news:
         news.click_newbutton()
         news.enter_newsinfo()
         news.click_submit()
-        actualurl=self.driver.current_url
-        assert actualurl == "https://groceryapp.uniqassosiates.com/admin/News/add"
+        actualresult=self.driver.find_element(By.XPATH,"//div[@class='alert alert-success alert-dismissible']").text
+        assert "News Created Successfully" in actualresult
 
-    @pytest.mark.parametrize("newsinfo",["new1","current","sports"])
-    def test_verifySearch(self,browzer_instance,newsinfo):
+    @pytest.mark.parametrize("newsdata",["movies","current","sports"])
+    def test_verifySearch(self,browzer_instance,newsdata):
         self.driver = browzer_instance
         excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
         username_value = excelutility.get_string_data(2, 1, "LoginPage")
@@ -81,10 +83,11 @@ class Test_news:
         news.click_managetile()
         time.sleep(2)
         news.click_searchbutton()
-        news.type_news(newsinfo)
+        news.type_news(newsdata)
         news.click_submit()
-        # actualurl=self.driver.current_url
-        # assert actualurl=="https://groceryapp.uniqassosiates.com/admin/news/index"
+        actualresult = self.driver.find_element(By.XPATH,"//table/tbody/tr[1]/td[1]").text
+        assert newsdata in actualresult
+
 
 
 
