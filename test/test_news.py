@@ -2,7 +2,7 @@ import time
 
 import pytest
 from selenium.webdriver.common.by import By
-
+from constants import constant
 from pages.loginpage import Loginpage
 from pages.newspage import News
 from test.conftest import browzer_instance
@@ -12,7 +12,8 @@ from utilities.excelutility import ExcelUtility
 class Test_news:
     def test_verifymanagenews(self, browzer_instance):
         self.driver = browzer_instance
-        excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+        #excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+        excelutility = ExcelUtility(constant.file_path)
         username_value = excelutility.get_string_data(2, 1, "LoginPage")
         password_value = excelutility.get_string_data(2, 2, "LoginPage")
         # username = self.driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username_value)
@@ -22,20 +23,21 @@ class Test_news:
         #time.sleep(2)
         #home=self.driver.find_element(By.XPATH,"//li[@class='breadcrumb-item']").click()
         loginpage = Loginpage(self.driver)
-        loginpage.enter_username(username_value)
-        loginpage.enter_password(password_value)
-        loginpage.click_login()
-        news=News(self.driver)
-        news.click_managetile()
-        time.sleep(2)
-        news.click_breadcrumb()
+        loginpage.enter_username(username_value).enter_password(password_value).click_login().click_managetile().click_breadcrumb()
+        # loginpage.enter_password(password_value)
+        # loginpage.click_login()
+        # news=News(self.driver)
+        # news.click_managetile()
+        # time.sleep(2)
+        # news.click_breadcrumb()
         actualurl = self.driver.current_url
         assert actualurl == "https://groceryapp.uniqassosiates.com/admin/home"
 
 
     def test_verify_addnews(self,browzer_instance):
         self.driver = browzer_instance
-        excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+        #excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+        excelutility = ExcelUtility(constant.file_path)
         username_value = excelutility.get_string_data(2, 1, "LoginPage")
         password_value = excelutility.get_string_data(2, 2, "LoginPage")
         # username = self.driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username_value)
@@ -48,22 +50,22 @@ class Test_news:
         # self.driver.find_element(By.XPATH,"//textarea[@id='news']").send_keys("Welcome")
         # submit=self.driver.find_element(By.XPATH,"//button[@type='submit']").click()
         loginpage = Loginpage(self.driver)
-        loginpage.enter_username(username_value)
-        loginpage.enter_password(password_value)
-        loginpage.click_login()
-        news = News(self.driver)
-        news.click_managetile()
-        time.sleep(2)
-        news.click_newbutton()
-        news.enter_newsinfo()
-        news.click_submit()
+        loginpage.enter_username(username_value).enter_password(password_value).click_login().click_managetile().click_newbutton().enter_newsinfo().click_submit()
+        # loginpage.enter_password(password_value)
+        # loginpage.click_login()
+        # news = News(self.driver)
+        # news.click_managetile()
+        # news.click_newbutton()
+        # news.enter_newsinfo()
+        # news.click_submit()
         actualresult=self.driver.find_element(By.XPATH,"//div[@class='alert alert-success alert-dismissible']").text
         assert "News Created Successfully" in actualresult
 
     @pytest.mark.parametrize("newsdata",["movies","current","sports"])
     def test_verifySearch(self,browzer_instance,newsdata):
         self.driver = browzer_instance
-        excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+        #excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+        excelutility = ExcelUtility(constant.file_path)
         username_value = excelutility.get_string_data(2, 1, "LoginPage")
         password_value = excelutility.get_string_data(2, 2, "LoginPage")
         # username = self.driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username_value)
@@ -76,15 +78,16 @@ class Test_news:
         # self.driver.find_element(By.XPATH,"//input[@class='form-control']").send_keys("Welcome")
         # self.driver.find_element(By.XPATH,"//button[@type='submit']").click()
         loginpage = Loginpage(self.driver)
-        loginpage.enter_username(username_value)
-        loginpage.enter_password(password_value)
-        loginpage.click_login()
-        news = News(self.driver)
-        news.click_managetile()
+        loginpage.enter_username(username_value).enter_password(password_value).click_login().click_managetile().click_searchbutton().type_news(newsdata).click_submit()
+        # loginpage.enter_password(password_value)
+        # loginpage.click_login()
+        # news = News(self.driver)
+        # news.click_managetile()
+        # time.sleep(2)
+        # news.click_searchbutton()
+        # news.type_news(newsdata)
+        # news.click_submit()
         time.sleep(2)
-        news.click_searchbutton()
-        news.type_news(newsdata)
-        news.click_submit()
         actualresult = self.driver.find_element(By.XPATH,"//table/tbody/tr[1]/td[1]").text
         assert newsdata in actualresult
 

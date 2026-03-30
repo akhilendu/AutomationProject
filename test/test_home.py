@@ -2,15 +2,18 @@ import time
 
 from selenium.webdriver.common.by import By
 
+from constants import constant
 from pages.homepage import Homepage
 from pages.loginpage import Loginpage
 from utilities.excelutility import ExcelUtility
 
 
 class Test_Logout:
-    def test_verify_logoutfunction(self, browzer_instance):
-       self.driver = browzer_instance
-       excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+    def test_verify_logoutfunction(self,cross_browser):
+       # self.driver = browzer_instance
+       self.driver = cross_browser
+       #excelutility = ExcelUtility("C:\\Users\\Akhilendu\\Downloads\\TestData.xlsx")
+       excelutility = ExcelUtility(constant.file_path)
        username_value = excelutility.get_string_data(2, 1, "LoginPage")
        password_value = excelutility.get_string_data(2, 2, "LoginPage")
        # username = self.driver.find_element(By.XPATH, "//input[@name='username']").send_keys(username_value)
@@ -20,12 +23,12 @@ class Test_Logout:
        time.sleep(5)
        # logout = self.driver.find_element(By.XPATH, "//i[@class='ace-icon fa fa-power-off']").click()
        loginpage = Loginpage(self.driver)
-       loginpage.enter_username(username_value)
-       loginpage.enter_password(password_value)
-       loginpage.click_login()
-       logoutpage = Homepage(self.driver)
-       logoutpage.click_admin()
-       logoutpage.click_logout()
+       loginpage.enter_username(username_value).enter_password(password_value).click_login().click_admin().click_logout()
+       # loginpage.enter_password(password_value)
+       # loginpage.click_login()
+       # logoutpage = Homepage(self.driver)
+       # logoutpage.click_admin()
+       # logoutpage.click_logout()
        time.sleep(5)
 
        actualurl = self.driver.current_url
